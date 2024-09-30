@@ -39,10 +39,16 @@ public class FillingTheBoard {
     public boolean placeShip(Ship ship, Board board) {
         Random rand = new Random();
         int row, col;
+        int attempts = 0;
+        final int maxAttempts = 1000;
 
         do {
             row = rand.nextInt(SIZE) + 1;
             col = rand.nextInt(SIZE) + 1;
+            attempts++;
+            if (attempts > maxAttempts) {
+                return false;
+            }
         } while (!canPlaceShip(row, col, ship, board));
 
         if (ship.isHorizontal()) {
@@ -55,9 +61,8 @@ public class FillingTheBoard {
                 board.set(row + 1, col + i - 1, '|');
             }
 
-            board.set(row, col +  ship.getSize(), '|');
+            board.set(row, col + ship.getSize(), '|');
             board.set(row, col - 1, '|');
-
         } else {
             for (int i = 0; i < ship.getSize(); i++) {
                 board.set(row + i, col, '!');
@@ -75,11 +80,21 @@ public class FillingTheBoard {
         return true;
     }
 
-    public void Start(Board board, int amountOfShipTypes, int amountOfBiggestDesk) {
+    public void fill(Board board, int amountOfShipTypes, int amountOfBiggestDesk) {
         AllShips allShips = new AllShips(amountOfShipTypes, amountOfBiggestDesk);
         List<Ship> ships = allShips.madeShips(new ArrayList<>());
-        for (int i = 0; i < ships.size(); i++) {
-            placeShip(ships.get(i), board);
-        }
+
+        boolean allShipsPlaced;
+        do {
+            board.clear();
+            allShipsPlaced = true;
+
+            for (Ship ship : ships) {
+                if (!placeShip(ship, board)) {
+                    allShipsPlaced = false;
+                    break;
+                }
+            }
+        } while (!allShipsPlaced);
     }
 }

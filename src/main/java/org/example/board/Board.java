@@ -8,15 +8,25 @@ import lombok.Setter;
 public class Board {
     private final char[][] board;
     private int BOUNDS = 2;
+    private int boardSizeWithBounds;
 
     public void set(int x, int y, char val) {
         board[x][y] = val;
     }
 
     public Board(int boardSize) {
-        board = new char[boardSize + BOUNDS][boardSize + BOUNDS];
-        for (int i = 0; i < boardSize + BOUNDS; i++) {
-            for (int j = 0; j < boardSize + BOUNDS; j++) {
+        boardSizeWithBounds = boardSize + BOUNDS;
+        board = new char[boardSizeWithBounds][boardSizeWithBounds];
+        for (int i = 0; i < boardSizeWithBounds; i++) {
+            for (int j = 0; j < boardSizeWithBounds; j++) {
+                board[i][j] = '.';
+            }
+        }
+    }
+
+    public void clear() {
+        for (int i = 0; i < boardSizeWithBounds; i++) {
+            for (int j = 0; j < boardSizeWithBounds; j++) {
                 board[i][j] = '.';
             }
         }

@@ -13,7 +13,7 @@ public class BoardFabric {
         Board board = new Board(boardSize);
         FillingTheBoard fillingTheBoard = new FillingTheBoard(boardSize);
 
-        fillingTheBoard.Start(board, amountOfShipTypes, theBiggestDeskShip);
+        fillingTheBoard.fill(board, amountOfShipTypes, theBiggestDeskShip);
 
         return board;
     }
