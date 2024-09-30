@@ -1,7 +1,7 @@
 package org.example.playLogic;
 
 import lombok.AllArgsConstructor;
-import org.example.Board.Board;
+import org.example.board.Board;
 import org.example.ship.AllShips;
 import org.example.ship.Ship;
 
@@ -11,8 +11,7 @@ import java.util.Random;
 
 @AllArgsConstructor
 public class FillingTheBoard {
-    private final int SIZE = 10;
-    private final int AMOUNT_OF_SHIPS = 10;
+    private final int SIZE;
 
     private boolean canPlaceShip(int row, int col, Ship ship, Board board) {
         if (ship.isHorizontal()) {
@@ -42,27 +41,44 @@ public class FillingTheBoard {
         int row, col;
 
         do {
-            row = rand.nextInt(SIZE);
-            col = rand.nextInt(SIZE);
+            row = rand.nextInt(SIZE) + 1;
+            col = rand.nextInt(SIZE) + 1;
         } while (!canPlaceShip(row, col, ship, board));
 
         if (ship.isHorizontal()) {
             for (int i = 0; i < ship.getSize(); i++) {
-                board.getBoard()[row][col + i] = '!';
+                board.set(row, col + i, '!');
             }
+
+            for (int i = 0; i <= ship.getSize(); i++) {
+                board.set(row - 1, col + i - 1, '|');
+                board.set(row + 1, col + i - 1, '|');
+            }
+
+            board.set(row, col +  ship.getSize(), '|');
+            board.set(row, col - 1, '|');
+
         } else {
             for (int i = 0; i < ship.getSize(); i++) {
-                board.getBoard()[row + i][col] = '!';
+                board.set(row + i, col, '!');
             }
+
+            for (int i = 0; i <= ship.getSize() + 1; i++) {
+                board.set(row + i - 1, col - 1, '|');
+                board.set(row + i - 1, col + 1, '|');
+            }
+
+            board.set(row + ship.getSize(), col, '|');
+            board.set(row - 1, col, '|');
         }
 
         return true;
     }
 
-    public void Start(Board board) {
-        AllShips allShips = new AllShips();
+    public void Start(Board board, int amountOfShipTypes, int amountOfBiggestDesk) {
+        AllShips allShips = new AllShips(amountOfShipTypes, amountOfBiggestDesk);
         List<Ship> ships = allShips.madeShips(new ArrayList<>());
-        for (int i = 0; i < AMOUNT_OF_SHIPS; i++) {
+        for (int i = 0; i < ships.size(); i++) {
             placeShip(ships.get(i), board);
         }
     }

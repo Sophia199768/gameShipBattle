@@ -1,25 +1,27 @@
 package org.example.ship;
 
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 import java.util.Random;
 
+@AllArgsConstructor
 public class AllShips {
-    private final int AMOUNT_OF_SHIP_TYPES = 4;
-    private final int THE_BIGGEST_DESK_SHIP = 4;
+    private final int amountOfShipTypes;
+    private final int theBiggestDeskShip;
 
     public List<Ship> madeShips(List<Ship> ships) {
         Random random = new Random();
         boolean oriented;
-        int j = 1;
+        int j;
 
-        for (int i = 1; i <= AMOUNT_OF_SHIP_TYPES; i++) {
-            for (; j <= THE_BIGGEST_DESK_SHIP; j++) {
+        for (int i = 1; i <= amountOfShipTypes; i++) {
+            j = i;
+            for (; j <= theBiggestDeskShip; j++) {
                 oriented = random.nextBoolean();
                 Ship ship = new Ship(i, oriented);
                 ships.add(ship);
             }
-
-            j = i;
         }
 
         return ships;

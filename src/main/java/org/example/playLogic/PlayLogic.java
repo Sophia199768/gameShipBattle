@@ -1,9 +1,11 @@
 package org.example.playLogic;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.example.player.Player;
 
 @AllArgsConstructor
+@Getter
 public class PlayLogic {
     private boolean counter;
     private Player firstPlayer;
@@ -19,7 +21,7 @@ public class PlayLogic {
     public void shot(int x, int y) {
         Player player;
 
-        if (counter) {
+        if (!counter) {
             player = firstPlayer;
         } else {
             player = secondPlayer;
@@ -28,11 +30,11 @@ public class PlayLogic {
         if (player.getBoard().getBoard()[x][y] == '!') {
             player.getBoard().getBoard()[x][y] = '#';
             player.minusHealth();
-        } else if (player.getBoard().getBoard()[x][y] == '.') {
-            player.getBoard().getBoard()[x][y] = '_';
-            counter = false;
         } else if (player.getBoard().getBoard()[x][y] == '#') {
             throw new SeaBattleException("You have already shot there");
+        } else {
+            player.getBoard().getBoard()[x][y] = '_';
+            counter = !counter;
         }
     }
 }
